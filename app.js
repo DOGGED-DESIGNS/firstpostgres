@@ -1,7 +1,7 @@
 const Express = require("express");
-// const Route = require("./router/router");
+const Route = require("./router/router");
 const cors = require("cors");
-// const { clients } = require("./model/model");
+const { clients } = require("./model/model");
 const bodyparser = require("body-parser");
 
 const App = Express();
@@ -31,7 +31,7 @@ App.listen(process.env.PORT, (req, res) => {
   console.log("i am listening");
 });
 
-// App.use("/api", Route);
+App.use("/api", Route);
 
 App.use((req, res) => {
   res.status(500).send("page not found");
