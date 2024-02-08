@@ -1,10 +1,14 @@
 const { Client } = require("pg");
+const Env = require("dotenv");
+
+Env.config({ path: `${__dirname}/../config.env` });
 
 const clients = new Client({
   host: "localhost",
-  user: "postgres",
-  password: "dogged8000",
-  database: "testdata",
+  port: process.env.PORT2,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 });
 
 const db = clients.connect();
@@ -20,3 +24,5 @@ const db = clients.connect();
 module.exports = {
   clients,
 };
+
+// PGPASSWORD=s4TJdS0QkHgpvQVEDVcyL6S3ei7VPyBR psql -h dpg-cn14856n7f5s73fdi3ag-a.oregon-postgres.render.com -U sandatabase_user sandatabase

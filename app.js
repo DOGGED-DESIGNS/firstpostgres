@@ -13,6 +13,7 @@ const morgan = require("morgan");
 Env.config({ path: `${__dirname}/config.env` });
 
 console.log(process.env.PORT);
+console.log(process.env.PASSWORD);
 
 App.use(morgan("dev"));
 
