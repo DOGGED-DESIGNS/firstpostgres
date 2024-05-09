@@ -1,7 +1,9 @@
 const Express = require("express");
-const Route = require("./router/router");
+const { connect } = require("./database/connection");
+
+const { route } = require("./router/router");
 const cors = require("cors");
-const { clients } = require("./model/model");
+// const { clients } = require("./model/model");
 const bodyparser = require("body-parser");
 
 const App = Express();
@@ -27,54 +29,30 @@ App.use(
 App.use(bodyparser.json());
 App.use(bodyparser.urlencoded({ extended: true }));
 
-App.listen(process.env.PORT, (req, res) => {
-  console.log("i am listening");
-});
+const start = async () => {
+  try {
+    await connect();
 
-App.use("/api", Route);
+    App.listen(process.env.PORT, (req, res) => {
+      console.log("i am listening ");
+    });
+    console.log("database connected successfully two times");
+  } catch (error) {
+    console.log(error.message);
+    console.log("data base failed to connect");
+  }
+};
+
+start();
+
+App.use("/api", route);
 
 App.use((req, res) => {
-  res.status(500).send("page not found");
+  res.status(400).json({ error: true, message: "page not found" });
 });
-// const Express = require("express");
-// const path = require("path");
-// const multer = require("multer");
-// const Router = require("./router/router");
-// const env = require("dotenv");
-// const cors = require("cors");
-// env.config({ path: `${__dirname}/Path/config.env` });
 
-// const bodyparser = require("body-parser");
-// const morgan = require("morgan");
-// const App = Express();
-// App.use(morgan("dev"));
-// App.use(bodyparser.json());
-// App.use(bodyparser.urlencoded({ extended: true }));
-// App.use(Express.static("assets"));
-// App.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     methods: ["GET", "POST", "PATCH", "UPDATE"],
-//   })
-// );
-// App.set("view engine", "ejs");
-
-// App.use("/api", Router);
+// App.use("/api", Route);
 
 // App.use((req, res) => {
-//   res.send("page not found");
-// });
-
-// const PORT = process.env.PORT || 8000;
-
-// App.listen(PORT, (req, res) => {
-//   console.log("listening to port" + PORT);
-// });
-
-// clients.query( `insert into how (id, email) values(1,'${values}')`, (err, res) => {
-//   if (!err) {
-//     console.log(res.rows);
-//   } else {
-//     console.log(err);
-//   }
+//   res.status(500).send("page not found");
 // });
